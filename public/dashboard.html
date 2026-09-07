@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SiFi Companion — Lead Dashboard</title>
+<style>
+  :root {
+    --sifi-green: #0E8C6B;
+    --sifi-green-dark: #0A6B51;
+    --sifi-green-light: #E7F6F1;
+    --text-dark: #1A1F1D;
+    --text-gray: #5B6A65;
+    --border-light: #E4EAE7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #FAFCFB;
+    color: var(--text-dark);
+    margin: 0;
+    padding: 32px;
+  }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .subtitle { color: var(--text-gray); margin-bottom: 24px; font-size: 14px; }
+  .stats { display: flex; gap: 16px; margin-bottom: 24px; }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-width: 140px;
+  }
+  .stat-num { font-size: 26px; font-weight: 700; color: var(--sifi-green-dark); }
+  .stat-label { font-size: 13px; color: var(--text-gray); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  th {
+    background: var(--sifi-green-light);
+    color: var(--sifi-green-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  tr:last-child td { border-bottom: none; }
+  .empty-cell { color: #B5BEBB; font-style: italic; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--sifi-green-light);
+    color: var(--sifi-green-dark);
+  }
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .topic-chip {
+    background: #F0F3F1;
+    color: var(--text-gray);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+  }
+  .refresh-btn {
+    background: var(--sifi-green);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .no-leads { padding: 40px; text-align: center; color: var(--text-gray); }
+</style>
+</head>
+<body>
+
+<h1>SiFi Companion — Lead Dashboard</h1>
+<p class="subtitle">Conversations captured through the voice companion widget</p>
+
+<div class="stats" id="stats"></div>
+
+<button class="refresh-btn" onclick="loadLeads()">Refresh</button>
+
+<div id="table-container"></div>
+
+<script>
+async function loadLeads() {
+  const res = await fetch('/api/leads');
+  const leads = await res.json();
+
+  const withName = leads.filter(l => l.name).length;
+  const withPhone = leads.filter(l => l.phone).length;
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${leads.length}</div><div class="stat-label">Total conversations</div></div>
+    <div class="stat-card"><div class="stat-num">${withName}</div><div class="stat-label">Names captured</div></div>
+    <div class="stat-card"><div class="stat-num">${withPhone}</div><div class="stat-label">Phone numbers captured</div></div>
+  `;
+
+  const container = document.getElementById('table-container');
+
+  if (leads.length === 0) {
+    container.innerHTML = '<div class="no-leads">No conversations yet. Try the voice companion on the homepage.</div>';
+    return;
+  }
+
+  const rows = leads.map(l => `
+    <tr>
+      <td>${formatDate(l.lastUpdated)}</td>
+      <td>${l.name || '<span class="empty-cell">Not yet shared</span>'}</td>
+      <td>${l.phone || '<span class="empty-cell">Not yet shared</span>'}</td>
+      <td>${l.company_size || '<span class="empty-cell">Not yet shared</span>'}</td>
+      <td>${l.challenge || '<span class="empty-cell">Not yet shared</span>'}</td>
+      <td><div class="topics">${(l.topics_discussed || []).map(t => `<span class="topic-chip">${t}</span>`).join('') || '<span class="empty-cell">—</span>'}</div></td>
+      <td><span class="badge">${l.suggestedNextAction}</span></td>
+    </tr>
+  `).join('');
+
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Last active</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Company size</th>
+          <th>Challenge mentioned</th>
+          <th>Topics discussed</th>
+          <th>Suggested next action</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleString();
+}
+
+loadLeads();
+setInterval(loadLeads, 15000); // auto-refresh every 15s
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SiFi | All-in-One Business Financial Management Platform</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-dot"></span>SiFi
+    </div>
+    <div class="nav-links">
+      <span>Product</span>
+      <span>Solutions</span>
+      <span>Benefits</span>
+      <span>Resources</span>
+      <span>Pricing</span>
+    </div>
+    <div class="nav-actions">
+      <span class="login-link">Login</span>
+      <button class="btn-primary">Get started for free</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-banner">Say hello to SiFi Rewards! Earn cashback and points, shared across your team →</div>
+  <h1>All-in-One Business<br/>Financial Management Platform</h1>
+  <p class="hero-sub">All-in-One financial management solution that simplifies business spending.</p>
+  <div class="hero-cta">
+    <input type="email" placeholder="Work email" />
+    <button class="btn-primary">Get started for free</button>
+  </div>
+  <p class="hero-license">Licensed by the Saudi Central Bank (SAMA) &nbsp;•&nbsp; Trusted by 3,500+ businesses in Saudi Arabia</p>
+</header>
+
+<section class="products">
+  <h2>Dedicated platform to simplify financial operations</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-icon">💳</div>
+      <h3>Spend management</h3>
+      <p>Track transactions in real-time and manage all company spending with customized approval workflows</p>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🪪</div>
+      <h3>Corporate cards</h3>
+      <p>Issue unlimited physical and virtual corporate cards for employees with built-in controls and limits</p>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🧾</div>
+      <h3>Reimbursements</h3>
+      <p>Streamline the reimbursement process, snap, submit, approve, and get reimbursed directly</p>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">📊</div>
+      <h3>Accounting automation</h3>
+      <p>Automate accounting processes and keep your books up to date, with ERP integrations coming soon</p>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🌍</div>
+      <h3>Transfers &amp; remittances</h3>
+      <p>Transfer payments to local vendors, with international remittances coming soon</p>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🎁</div>
+      <h3>Rewards</h3>
+      <p>Get up to 1.5% cashback and SiFi points on every card spend</p>
+    </div>
+  </div>
+</section>
+
+<section class="companion-cta">
+  <h2>Have a finance question? Just ask.</h2>
+  <p>Talk to your SiFi financial companion, any question, any topic, expense management, cards, transfers, payroll, and more.</p>
+</section>
+
+<!-- Voice Companion Widget -->
+<div id="voice-widget" class="voice-widget-collapsed">
+  <button id="voice-toggle" class="voice-toggle-btn">
+    <span class="voice-toggle-icon">🎙️</span>
+    <span class="voice-toggle-label">Ask your SiFi Companion</span>
+  </button>
+</div>
+
+<div id="voice-panel" class="voice-panel hidden">
+  <div class="voice-panel-header">
+    <div class="voice-panel-title">
+      <span class="voice-avatar">🎙️</span>
+      <div>
+        <div class="voice-panel-name">SiFi Companion</div>
+        <div class="voice-panel-status" id="voice-status">Tap the mic to start talking</div>
+      </div>
+    </div>
+    <button id="voice-close" class="voice-close-btn">✕</button>
+  </div>
+
+  <div class="voice-transcript" id="voice-transcript">
+    <div class="msg assistant">
+      Hi, I'm your SiFi financial companion. Ask me anything about managing your business finances, expense management, cards, transfers, payroll, whatever's on your mind.
+    </div>
+  </div>
+
+  <div class="voice-controls">
+    <button id="mic-btn" class="mic-btn">
+      <span id="mic-icon">🎤</span>
+    </button>
+    <div class="voice-hint" id="voice-hint">Click the mic and speak</div>
+  </div>
+
+  <div class="text-fallback">
+    <input type="text" id="text-input" placeholder="Or type your question here..." />
+    <button id="text-send">Send</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
