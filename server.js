@@ -108,7 +108,7 @@ async function synthesizeSpeech(text) {
       text: safeText,
       language_code: 'en-IN',
       model: 'bulbul:v3',
-      speaker: 'anushka',
+      speaker: 'ritu',
       pace: 1.0,
     }),
   });
