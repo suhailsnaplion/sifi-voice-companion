@@ -82,38 +82,36 @@
 <!-- Voice Companion Widget -->
 <div id="voice-widget" class="voice-widget-collapsed">
   <button id="voice-toggle" class="voice-toggle-btn">
-    <span class="voice-toggle-icon">🎙️</span>
-    <span class="voice-toggle-label">Ask your SiFi Companion</span>
+    <div class="companion-avatar-ring">
+      <div class="companion-avatar">
+        <span class="avatar-face">👩🏽‍💼</span>
+      </div>
+      <div class="pulse-ring"></div>
+    </div>
+    <div class="voice-toggle-text">
+      <div class="voice-toggle-title">Talk to Farah</div>
+      <div class="voice-toggle-subtitle">Your SiFi finance companion</div>
+    </div>
   </button>
 </div>
 
 <div id="voice-panel" class="voice-panel hidden">
-  <div class="voice-panel-header">
-    <div class="voice-panel-title">
-      <span class="voice-avatar">🎙️</span>
-      <div>
-        <div class="voice-panel-name">SiFi Companion</div>
-        <div class="voice-panel-status" id="voice-status">Tap the mic to start talking</div>
-      </div>
+  <button id="voice-close" class="voice-close-btn">✕</button>
+
+  <div class="companion-stage">
+    <div class="companion-avatar-large" id="companion-avatar-large">
+      <span class="avatar-face-large">👩🏽‍💼</span>
+      <div class="speaking-ring" id="speaking-ring"></div>
+      <div class="listening-ring" id="listening-ring"></div>
     </div>
-    <button id="voice-close" class="voice-close-btn">✕</button>
+    <div class="companion-name">Farah</div>
+    <div class="companion-state" id="voice-status">Say hello, I'm listening</div>
   </div>
 
-  <div class="voice-transcript" id="voice-transcript">
-    <div class="msg assistant">
-      Hi, I'm your SiFi financial companion. Ask me anything about managing your business finances, expense management, cards, transfers, payroll, whatever's on your mind.
-    </div>
-  </div>
-
-  <div class="voice-controls">
-    <button id="mic-btn" class="mic-btn">
-      <span id="mic-icon">🎤</span>
-    </button>
-    <div class="voice-hint" id="voice-hint">Click the mic and speak</div>
-  </div>
+  <div class="voice-transcript" id="voice-transcript"></div>
 
   <div class="text-fallback">
-    <input type="text" id="text-input" placeholder="Or type your question here..." />
+    <input type="text" id="text-input" placeholder="Or type instead..." />
     <button id="text-send">Send</button>
   </div>
 </div>
@@ -121,3 +119,4 @@
 <script src="app.js"></script>
 </body>
 </html>
+
