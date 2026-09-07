@@ -171,69 +171,73 @@ body {
   background: var(--white);
   border: 1px solid var(--border-light);
   border-radius: 999px;
-  padding: 10px 22px 10px 10px;
+  padding: 12px 28px 12px 12px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   cursor: pointer;
-  box-shadow: 0 10px 32px rgba(14,140,107,0.22);
+  box-shadow: 0 12px 36px rgba(14,140,107,0.25);
   z-index: 100;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .voice-toggle-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 40px rgba(14,140,107,0.3);
+  box-shadow: 0 16px 44px rgba(14,140,107,0.32);
 }
 
 .companion-avatar-ring {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 74px;
+  height: 74px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 .companion-avatar {
-  width: 56px;
-  height: 56px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--sifi-green), var(--sifi-green-dark));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   z-index: 2;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  border: 2px solid var(--white);
 }
-/* NOTE: avatar-face is a placeholder emoji. Swap for a real photo by
-   replacing this span with: <img src="/companion-photo.jpg" class="avatar-img" />
-   and setting .avatar-img { width:100%; height:100%; border-radius:50%; object-fit:cover; } */
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .avatar-face { font-size: 28px; }
 
 .pulse-ring {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   border: 2px solid var(--sifi-green);
   animation: gentle-pulse 2.4s infinite;
 }
 @keyframes gentle-pulse {
   0% { transform: scale(1); opacity: 0.7; }
-  70% { transform: scale(1.35); opacity: 0; }
-  100% { transform: scale(1.35); opacity: 0; }
+  70% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.3); opacity: 0; }
 }
 
 .voice-toggle-text { text-align: left; }
 .voice-toggle-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-dark);
-  line-height: 1.2;
+  line-height: 1.25;
+  max-width: 190px;
 }
 .voice-toggle-subtitle {
-  font-size: 12px;
-  color: var(--text-gray);
+  font-size: 12.5px;
+  color: var(--sifi-green-dark);
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 /* Expanded companion panel */
@@ -283,18 +287,21 @@ body {
 
 .companion-avatar-large {
   position: relative;
-  width: 116px;
-  height: 116px;
+  width: 128px;
+  height: 128px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--sifi-green), var(--sifi-green-dark));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(14,140,107,0.3);
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(14,140,107,0.35);
   margin-bottom: 14px;
+  cursor: pointer;
+  border: 3px solid var(--white);
 }
-/* Swap avatar-face-large span for a real <img class="avatar-img-large"> the
-   same way as the small avatar above, once a real photo is available. */
+.avatar-img-large {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .avatar-face-large { font-size: 56px; z-index: 2; }
 
 .listening-ring, .speaking-ring {
