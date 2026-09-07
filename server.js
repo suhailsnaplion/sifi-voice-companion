@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const SARVAM_API_KEY = process.env.SARVAM_API_KEY;
 const LEADS_FILE = path.join(__dirname, 'leads.json');
 
 if (!fs.existsSync(LEADS_FILE)) {
@@ -86,6 +87,52 @@ async function callOpenAI(messages, jsonMode = false) {
   const data = await res.json();
   return data.choices[0].message.content;
 }
+
+// Calls Sarvam AI's Bulbul TTS model to generate natural-sounding speech.
+// Returns a base64-encoded WAV string that the frontend plays directly,
+// no browser speech synthesis involved.
+async function synthesizeSpeech(text) {
+  if (!SARVAM_API_KEY) {
+    throw new Error('SARVAM_API_KEY is not set on the server.');
+  }
+  // Sarvam's v3 REST limit is 2500 characters per request; trim defensively.
+  const safeText = text.length > 2000 ? text.slice(0, 2000) : text;
+
+  const res = await fetch('https://api.sarvam.ai/text-to-speech', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'api-subscription-key': SARVAM_API_KEY,
+    },
+    body: JSON.stringify({
+      text: safeText,
+      language_code: 'en-IN',
+      model: 'bulbul:v3',
+      speaker: 'anushka',
+      pace: 1.0,
+    }),
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Sarvam TTS error: ${res.status} ${errText}`);
+  }
+  const data = await res.json();
+  // audios is an array of base64 WAV strings, one per input text
+  return data.audios && data.audios[0];
+}
+
+app.post('/api/tts', async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ error: 'text is required' });
+    const audioBase64 = await synthesizeSpeech(text);
+    res.json({ audio: audioBase64 });
+  } catch (err) {
+    console.error('TTS error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.post('/api/chat', async (req, res) => {
   try {

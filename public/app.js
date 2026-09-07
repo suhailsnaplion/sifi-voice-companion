@@ -39,12 +39,52 @@ function addMessage(role, text) {
   transcriptEl.scrollTop = transcriptEl.scrollHeight;
 }
 
-function speak(text) {
-  window.speechSynthesis.cancel();
+let currentAudio = null;
+
+async function speak(text) {
+  // Stop anything currently playing before starting new audio
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+  window.speechSynthesis.cancel(); // safety, in case fallback was used before
+
+  voiceStatus.textContent = 'Generating voice...';
+
+  try {
+    const res = await fetch('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    const data = await res.json();
+
+    if (data.error || !data.audio) {
+      console.warn('Sarvam TTS unavailable, falling back to browser voice:', data.error);
+      speakWithBrowserFallback(text);
+      return;
+    }
+
+    const audioSrc = 'data:audio/wav;base64,' + data.audio;
+    currentAudio = new Audio(audioSrc);
+    currentAudio.onplay = () => (voiceStatus.textContent = 'Speaking...');
+    currentAudio.onended = () => (voiceStatus.textContent = 'Tap the mic to talk');
+    currentAudio.onerror = () => {
+      console.warn('Audio playback failed, falling back to browser voice');
+      speakWithBrowserFallback(text);
+    };
+    await currentAudio.play();
+  } catch (err) {
+    console.warn('TTS request failed, falling back to browser voice:', err);
+    speakWithBrowserFallback(text);
+  }
+}
+
+// Fallback only used if Sarvam TTS is unreachable, so the demo never goes silent
+function speakWithBrowserFallback(text) {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = 1.0;
   utterance.pitch = 1.0;
-  // Try to pick a natural-sounding English voice if available
   const voices = window.speechSynthesis.getVoices();
   const preferred = voices.find(
     (v) => v.name.includes('Google US English') || v.name.includes('Samantha') || v.lang === 'en-US'
