@@ -128,6 +128,7 @@ async function loadLeads() {
       <td>${formatDate(l.lastUpdated)}</td>
       <td>${l.name || '<span class="empty-cell">Not yet shared</span>'}</td>
       <td>${l.phone || '<span class="empty-cell">Not yet shared</span>'}</td>
+      <td>${l.designation || '<span class="empty-cell">Not yet shared</span>'}</td>
       <td>${l.company_size || '<span class="empty-cell">Not yet shared</span>'}</td>
       <td>${l.challenge || '<span class="empty-cell">Not yet shared</span>'}</td>
       <td><div class="topics">${(l.topics_discussed || []).map(t => `<span class="topic-chip">${t}</span>`).join('') || '<span class="empty-cell">—</span>'}</div></td>
@@ -142,6 +143,7 @@ async function loadLeads() {
           <th>Last active</th>
           <th>Name</th>
           <th>Phone</th>
+          <th>Designation</th>
           <th>Company size</th>
           <th>Challenge mentioned</th>
           <th>Topics discussed</th>
